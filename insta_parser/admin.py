@@ -1,3 +1,31 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import *
+
+
+class StoryHashtagAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(StoryHashtag, StoryHashtagAdmin)
+
+
+class IgtvHashtagAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(IgtvHashtag, IgtvHashtagAdmin)
+
+
+class StoryAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Story, StoryAdmin)
+
+
+class IgtvAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Igtv, IgtvAdmin)
