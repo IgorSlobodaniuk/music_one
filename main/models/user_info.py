@@ -16,25 +16,10 @@ class MusicOneUser(AbstractUser):
         choices=ROLE_CHOICES,
         default=STUDENT,
     )
+    total_mark = models.PositiveIntegerField(
+        default=0
+    )
 
     class Meta:
         verbose_name = 'Music One User'
         verbose_name_plural = 'Music One Users'
-
-
-class EducationLevel(models.Model):
-    IN_PROGRESS = 'in_progress'
-    COMPLETED = 'completed'
-    LEVEL_CHOICES = [
-        (IN_PROGRESS, 'in_progress'),
-        (COMPLETED, 'completed'),
-    ]
-    level = models.CharField(
-        max_length=10,
-        choices=LEVEL_CHOICES,
-    )
-    user = models.OneToOneField(MusicOneUser, on_delete=models.CASCADE)
-
-# class StudentsRating(models.Model):
-#     student = models.ForeignKey(MusicOneUser, on_delete=models.CASCADE)
-#     education_level = models.ForeignKey(EducationLevels, on_delete=models.CASCADE)

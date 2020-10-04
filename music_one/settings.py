@@ -39,10 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'insta_parser',
+    'education',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
-    'rest_auth',
 ]
 
 MIDDLEWARE = [
