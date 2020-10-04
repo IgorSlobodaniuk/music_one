@@ -29,3 +29,10 @@ class IgtvAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Igtv, IgtvAdmin)
+
+
+class HighlightAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Highlight, HighlightAdmin)
