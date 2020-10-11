@@ -37,6 +37,13 @@ class QuestGroupAdmin(admin.ModelAdmin):
 admin.site.register(QuestGroup, QuestGroupAdmin)
 
 
+class QuestAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Quest, QuestAdmin)
+
+
 class GroupTestAdmin(admin.ModelAdmin):
     pass
 
@@ -56,13 +63,6 @@ class GroupTestAnswerVariantAdmin(admin.ModelAdmin):
 
 
 admin.site.register(GroupTestAnswerVariant, GroupTestAnswerVariantAdmin)
-
-
-class QuestAdmin(admin.ModelAdmin):
-    pass
-
-
-admin.site.register(Quest, QuestAdmin)
 
 
 class QuestQuestionAdmin(admin.ModelAdmin):

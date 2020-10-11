@@ -1,47 +1,17 @@
 from django.db import models
 
-from main.models.user_info import MusicOneUser
 from education.models.quest_structure import (
     EducationLevel,
     QuestGroup,
-    Quest
+    Quest,
 )
+from main.models.user_info import MusicOneUser
 
-
-class IGTVMark(models.Model):
-    user = models.OneToOneField(
-        MusicOneUser,
-        on_delete=models.PROTECT
-    )
-    level = models.ForeignKey(
-        EducationLevel,
-        on_delete=models.PROTECT
-    )
-    value = models.PositiveIntegerField()
-
-
-class StoryMark(models.Model):
-    user = models.OneToOneField(
-        MusicOneUser,
-        on_delete=models.PROTECT
-    )
-    level = models.ForeignKey(
-        EducationLevel,
-        on_delete=models.PROTECT
-    )
-    value = models.PositiveIntegerField()
-
-
-class LevelExamMark(models.Model):
-    user = models.OneToOneField(
-        MusicOneUser,
-        on_delete=models.PROTECT
-    )
-    level = models.ForeignKey(
-        EducationLevel,
-        on_delete=models.PROTECT
-    )
-    value = models.PositiveIntegerField()
+MARK_CHOISES = (
+    ('igtv', 'igtv'),
+    ('story', 'story'),
+    ('exam', 'exam'),
+)
 
 
 class TestMark(models.Model):
@@ -53,7 +23,7 @@ class TestMark(models.Model):
         QuestGroup,
         on_delete=models.PROTECT
     )
-    value = models.PositiveIntegerField()
+    value = models.IntegerField(default=0)
 
 
 class QuestResult(models.Model):
@@ -65,4 +35,20 @@ class QuestResult(models.Model):
         Quest,
         on_delete=models.PROTECT
     )
-    status_mark = models.BooleanField()
+    value = models.IntegerField(default=0)
+
+
+class LevelMark(models.Model):
+    user = models.OneToOneField(
+        MusicOneUser,
+        on_delete=models.PROTECT
+    )
+    level = models.ForeignKey(
+        EducationLevel,
+        on_delete=models.PROTECT
+    )
+    mark = models.IntegerField(default=0)
+    type_mark = models.CharField(
+        max_length=5,
+        choices=MARK_CHOISES,
+    )
