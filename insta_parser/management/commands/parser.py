@@ -1,16 +1,19 @@
 import json
-import os
-from collections import defaultdict
 from random import randint
 from time import sleep
-from typing import AnyStr, List, DefaultDict
+from typing import AnyStr, List, Dict
 
 import requests
 from django.core.management.base import BaseCommand
 from seleniumwire.webdriver import Chrome
 
+PROJECT_URL = 'http://localhost:8000'
+
 
 class Command(BaseCommand):
+
+    def handle(self, *args, **options):
+        return self.parse('alexmusic12321', 'music_test123')
 
     @staticmethod
     def sign_in(username, password, driver):
@@ -25,49 +28,46 @@ class Command(BaseCommand):
 
     @staticmethod
     def get_input_data():
-        user_data = requests.get(f"{os.environ['PROJECT_URL']}/instagram_data")
-        return {
-            'highlights': [],
-            'users': ['https://www.instagram.com/alexmusic12321/'],
-            'igtv_hashtags': [],
-            'highlight_hashtags': [],
-        }
+        return requests.get(f'{PROJECT_URL}/parser/instagram_data/').json()
 
     def parse(self, username, password):
         driver = Chrome()
         self.sign_in(username, password, driver)
         input_data = self.get_input_data()
+        highlights = {item['title']: item['id'] for item in input_data['highlights']}
+        story_hashtags = {item['hash_tag']: item['id'] for item in input_data['story_hashtags']}
+        igtv_hashtags = {item['hash_tag']: item['id'] for item in input_data['igtv_hashtags']}
         output_data = dict()
         for user in input_data['users']:
-            parse_user_data = {}
-            driver.get(user)
+            driver.get(user['instagram'])
             request = driver.wait_for_request('include_suggested_users')
-            parse_user_data['highlights'] = self.get_highlights(
+            output_data['stories'] = self.get_stories(
+                user['id'],
                 driver,
                 request,
-                input_data['highlights'],
-                input_data['highlight_hashtags'],
+                highlights,
+                story_hashtags,
             )
-            parse_user_data['igtvs'] = self.get_igtv_data(
+            output_data['igtvs'] = self.get_igtv_data(
                 driver,
                 user,
-                input_data['igtv_hashtags'],
+                igtv_hashtags,
             )
-            output_data[user] = parse_user_data
         self.send_to_app(output_data)
 
     @staticmethod
-    def get_highlights(driver: Chrome, request: AnyStr, highlights: List, hashtags: List) -> DefaultDict:
+    def get_stories(user: AnyStr, driver: Chrome, request: AnyStr, highlights: Dict, hashtags: Dict) -> List:
         """
+        :param user: instagram user
         :param driver: browser
         :param request: driver request
-        :param highlights: list of highlights names
-        :param hashtags: list of hashtags names
-        :return: defaultdict
+        :param highlights: dict of highlights names
+        :param hashtags: dict of hashtags names
+        :return: stories data list
         """
         current_user_data = requests.get(request.url, headers=request.headers).text
         edges = json.loads(current_user_data)['data']['user']['edge_highlight_reels']['edges']
-        items = defaultdict(list)
+        items = []
         for edge in edges:
             node = edge['node']
             title = node['title']
@@ -83,20 +83,22 @@ class Command(BaseCommand):
                 tappable_objects = item['tappable_objects']
                 if tappable_objects and tappable_objects[0]['__typename'] == 'GraphTappableHashtag':
                     hashtag = tappable_objects[0]['name']
-                    if hashtag not in hashtags:
+                    if hashtag not in hashtags or not video_resources:
                         continue
 
-                    stories_data = {'story_id': node['id']}
-                    if video_resources:
-                        stories_data['story_url'] = video_resources[-1]['src']
-                    items[hashtag].append(stories_data)
+                    items.append({
+                        'hash_tag': hashtags[hashtag],
+                        'highlight': highlights[title],
+                        'user': user,
+                        'url': video_resources[-1]['src'],
+                    })
         return items
 
     @staticmethod
     def get_igtv_data(driver, user, hashtags):
-        driver.get(f'{user}channel/')
+        driver.get(f"{user['instagram']}channel/")
         sleep(randint(3, 6))
-        items = {}
+        items = []
         for item in driver.find_elements_by_css_selector('a._bz0w'):
             tag = item.find_element_by_css_selector('._2XLe_')
             if tag:
@@ -104,9 +106,13 @@ class Command(BaseCommand):
                 if hashtag not in hashtags:
                     continue
 
-                items[hashtag.text] = tag.get_attribute('href')
+                items.append({
+                    'hash_tag': hashtags[hashtag],
+                    'user': user['id'],
+                    'url': tag['href'],
+                })
         return items
 
     @staticmethod
     def send_to_app(output_data):
-        requests.post(f"{os.environ['PROJECT_URL']}/instagram_data", json=output_data)
+        requests.post(f'{PROJECT_URL}/parser/instagram_data/', json=output_data)

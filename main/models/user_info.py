@@ -23,3 +23,6 @@ class MusicOneUser(AbstractUser):
     class Meta:
         verbose_name = 'Music One User'
         verbose_name_plural = 'Music One Users'
+
+    def __str__(self):
+        return self.username
