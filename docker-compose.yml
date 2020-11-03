@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  django:
+    build: ./
+    command: python /usr/src/music_one/manage.py runserver 0.0.0.0:8000
+#    command: bash -c "python /usr/src/music_one/manage.py migrate --no-input &&
+#                      python /usr/src/music_one/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/usr/src/music_one/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev

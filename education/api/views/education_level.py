@@ -1,16 +1,13 @@
-from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from main.models.user_info import MusicOneUser
-from education.models import UserEducation
+from education.models import EducationLevel
 
 
 class LevelView(APIView):
 
     def get(self, request, *args, **kwargs):
-
         user = request.user
         if user.role != 'student':
             raise Exception

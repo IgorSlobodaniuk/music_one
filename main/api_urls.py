@@ -1,6 +1,4 @@
 from django.urls import path
-from rest_framework import routers
-
 
 from main.api.views.views import UsersView
 
