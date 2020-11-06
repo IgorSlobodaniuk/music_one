@@ -1,5 +1,4 @@
 from django.db import models
-from main.models.user_info import MusicOneUser
 
 from education.models.quest_structure import (
     LEVEL_EXAM,

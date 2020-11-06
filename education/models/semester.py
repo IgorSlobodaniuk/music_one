@@ -13,10 +13,10 @@ SEMESTER_STATUS = (
 
 class Semester(models.Model):
     status = models.CharField(choices=SEMESTER_STATUS, max_length=11)
-    year = models.IntegerField(max_length=4)
-    number = models.IntegerField(
-        max_length=2,
-        choices=((1, 1), (2, 2))
-    )
+    year = models.IntegerField()
+    number = models.IntegerField(choices=((1, 1), (2, 2)))
     start = models.DateField()
     finish = models.DateField()
+
+    def __str__(self):
+        return f'{self.year} {self.number} {self.status}'

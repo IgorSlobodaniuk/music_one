@@ -1,5 +1,6 @@
 from django.contrib import admin
 from education.models.quest_structure import *
+from education.models.semester import *
 
 
 class EducationLevelAdmin(admin.ModelAdmin):
@@ -77,3 +78,10 @@ class QuestAnswerVariantAdmin(admin.ModelAdmin):
 
 
 admin.site.register(QuestAnswerVariant, QuestAnswerVariantAdmin)
+
+
+class SemesterAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Semester, SemesterAdmin)
