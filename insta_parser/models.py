@@ -28,16 +28,16 @@ class Story(models.Model):
     hash_tag = models.ForeignKey(StoryHashtag, on_delete=models.CASCADE, related_name='stories')
     highlight = models.ForeignKey(Highlight, on_delete=models.CASCADE, related_name='stories')
     user = models.OneToOneField(MusicOneUser, on_delete=models.CASCADE, related_name='stories')
-    url = models.URLField()
+    url = models.URLField(max_length=500)
 
     def __str__(self):
-        return self.pk
+        return f'story---{self.pk}'
 
 
 class Igtv(models.Model):
     hash_tag = models.ForeignKey(IgtvHashtag, on_delete=models.CASCADE, related_name='igtvs')
     user = models.OneToOneField(MusicOneUser, on_delete=models.CASCADE, related_name='igtvs')
-    url = models.URLField()
+    url = models.URLField(max_length=500)
 
     def __str__(self):
-        return self.pk
+        return f'igtv---{self.pk}'

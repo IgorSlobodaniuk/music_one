@@ -28,4 +28,5 @@ urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token),
     path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('user/', include('rest_auth.urls')),
+    path('parser/', include('insta_parser.urls')),
 ]
