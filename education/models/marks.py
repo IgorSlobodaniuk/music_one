@@ -7,11 +7,23 @@ from education.models.quest_structure import (
 )
 from main.models.user_info import MusicOneUser
 
-MARK_CHOISES = (
+MARK_TYPE_CHOICES = (
     ('igtv', 'igtv'),
     ('story', 'story'),
     ('exam', 'exam'),
 )
+
+
+class QuestMark(models.Model):
+    user = models.OneToOneField(
+        MusicOneUser,
+        on_delete=models.PROTECT
+    )
+    card = models.ForeignKey(
+        Quest,
+        on_delete=models.PROTECT
+    )
+    value = models.IntegerField(default=0)
 
 
 class TestMark(models.Model):
@@ -19,36 +31,32 @@ class TestMark(models.Model):
         MusicOneUser,
         on_delete=models.PROTECT
     )
-    quest_group = models.ForeignKey(
+    card = models.ForeignKey(
         QuestGroup,
         on_delete=models.PROTECT
     )
     value = models.IntegerField(default=0)
 
 
-class QuestResult(models.Model):
+class LevelExamMark(models.Model):
     user = models.OneToOneField(
         MusicOneUser,
         on_delete=models.PROTECT
     )
-    quest = models.ForeignKey(
-        Quest,
-        on_delete=models.PROTECT
-    )
-    value = models.IntegerField(default=0)
-
-
-class LevelMark(models.Model):
-    user = models.OneToOneField(
-        MusicOneUser,
-        on_delete=models.PROTECT
-    )
-    level = models.ForeignKey(
+    card = models.ForeignKey(
         EducationLevel,
         on_delete=models.PROTECT
     )
     mark = models.IntegerField(default=0)
-    type_mark = models.CharField(
+
+
+class MediaMark(models.Model):
+    user = models.OneToOneField(
+        MusicOneUser,
+        on_delete=models.PROTECT
+    )
+    mark = models.IntegerField(default=0)
+    mark_type = models.CharField(
         max_length=5,
-        choices=MARK_CHOISES,
+        choices=MARK_TYPE_CHOICES,
     )

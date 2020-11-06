@@ -1,8 +1,7 @@
 from django.urls import path
 
-
-from education.api.views.education_level import LevelView
+from education.api.views.education_level import UserCardView
 
 urlpatterns = [
-    path('current_level/', LevelView.as_view(), name='user'),
+    path('user_card/', UserCardView.as_view(), name='user_card'),
 ]
