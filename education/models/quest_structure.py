@@ -6,6 +6,7 @@ LEVEL_CHOISES = [(i, i) for i in range(1, 10)]
 LEVEL_EXAM = 'level_exam'
 GROUP_TEST = 'group_test'
 QUEST = 'quest'
+CONGRATS = 'congrats'
 
 CARD_TYPE_CHOICES = (
     (LEVEL_EXAM, LEVEL_EXAM),
@@ -146,3 +147,11 @@ class QuestAnswerVariant(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CongratsCard(models.Model):
+    education_level = models.ForeignKey(
+        EducationLevel,
+        on_delete=models.PROTECT,
+        related_name='congrats',
+    )

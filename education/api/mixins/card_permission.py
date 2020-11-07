@@ -13,12 +13,12 @@ class CardPermissionMixin(permissions.BasePermission):
             is_allow = False
         elif user.role != STUDENT or user.is_active is False:
             is_allow = False
-        elif self.check_started_semester() is False:
+        elif self.check_if_semester_started() is False:
             is_allow = False
         return is_allow
 
     @staticmethod
-    def check_started_semester():
+    def check_if_semester_started():
         try:
             return bool(Semester.objects.get(status=IN_PROGRESS))
         except Semester.DoesNotExist:

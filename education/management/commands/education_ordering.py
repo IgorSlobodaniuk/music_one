@@ -11,6 +11,7 @@ from education.models.quest_structure import (
     LEVEL_EXAM,
     GROUP_TEST,
     QUEST,
+    CONGRATS
 )
 
 
@@ -42,6 +43,11 @@ class Command(BaseCommand):
                 'card_type': LEVEL_EXAM
             })
             self.check_and_save(level_exam_obj)
+            congrats_obj = CardOrderingSerializer(data={
+                'card_id': level.congrats.pk,
+                'card_type': CONGRATS
+            })
+            self.check_and_save(congrats_obj)
 
     @staticmethod
     def check_and_save(obj):
