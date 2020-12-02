@@ -12,9 +12,15 @@ SEMESTER_STATUS = (
 
 
 class Semester(models.Model):
-    status = models.CharField(choices=SEMESTER_STATUS, max_length=11)
+    status = models.CharField(
+        choices=SEMESTER_STATUS,
+        max_length=11,
+        default=NOT_STARTED
+    )
     year = models.IntegerField()
-    number = models.IntegerField(choices=((1, 1), (2, 2)))
+    number = models.IntegerField(
+        choices=((1, 1), (2, 2))
+    )
     start = models.DateField()
     finish = models.DateField()
 

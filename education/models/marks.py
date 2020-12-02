@@ -10,7 +10,6 @@ from main.models.user_info import MusicOneUser
 MARK_TYPE_CHOICES = (
     ('igtv', 'igtv'),
     ('story', 'story'),
-    ('exam', 'exam'),
 )
 
 
